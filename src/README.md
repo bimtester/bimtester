@@ -53,7 +53,7 @@ The following packages are required for BIMTester to function:
 The repository does not contain translation files. You can generate them as shown.
 
 ```
-cd IfcOpenShell/src/ifcbimtester/bimtester/locale
+cd src/bimtester/locale
 pybabel compile -d .
 ```
 
@@ -87,7 +87,7 @@ optional arguments:
 You can turn it into a regular command by symlinking it to your bin folder.
 
 ```
-$ ln -s /path/to/IfcOpenShell/src/ifcbimtester/cli.py /usr/local/bin/bimtester
+$ ln -s /path/to/bimtester/src/cli.py /usr/local/bin/bimtester
 $ bimtester -h
 ```
 

@@ -22,7 +22,7 @@ PACKAGE_NAME:=bimtester
 SHELL := sh
 PYTHON:=python3
 PIP:=pip3
-VERSION:=$(shell cat ../../VERSION)
+VERSION:=$(shell cat ../VERSION)
 SED:=sed -i
 VENV_BIN:=bin
 

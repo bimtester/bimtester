@@ -1,7 +1,7 @@
 # BIMTester
 
 Gherkin based tests for BIM data (IFC). The package itself lives in
-[src/ifcbimtester](src/ifcbimtester/README.md); see its README for usage.
+[src](src/README.md); see its README for usage.
 
 ## Origin
 
@@ -19,8 +19,8 @@ differ from upstream.
 ## Installation
 
 ```sh
-pip install ./src/ifcbimtester          # core
-pip install "./src/ifcbimtester[gui]"   # with the PySide2 GUI
+pip install ./src          # core
+pip install "./src[gui]"   # with the PySide2 GUI
 ```
 
 The only IFC dependency is the `ifcopenshell` package from PyPI.
