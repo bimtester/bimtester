@@ -17,7 +17,12 @@ classifiers = [
 ]
 dependencies = [
     "ifcopenshell",
+    "behave",
+    "pystache",
 ]
+
+[project.optional-dependencies]
+gui = ["PySide2"]
 
 [project.urls]
 Homepage = "http://ifcopenshell.org"
@@ -31,3 +36,6 @@ namespaces = true
 
 [tool.setuptools.package-data]
 "*" = ["*.*"]
+
+[tool.black]
+line-length = 120

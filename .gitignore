@@ -1,0 +1,25 @@
+# Build output
+build/
+dist/
+*.egg-info/
+
+# Python residue
+__pycache__/
+*.py[cod]
+*$py.class
+*.py.bak
+venv/
+.venv/
+env/
+uv.lock
+
+# gettext binary translation files (compiled during "make dist")
+*.mo
+
+# Editors / IDEs
+.vscode/
+.idea/
+.vs/
+*.code-workspace
+*.swp
+*.swo

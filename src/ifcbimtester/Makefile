@@ -17,7 +17,27 @@
 # along with IfcBIMTester.  If not, see <http://www.gnu.org/licenses/>.
 
 PACKAGE_NAME:=bimtester
-include ../common.mk
+
+# Formerly provided by IfcOpenShell's src/common.mk
+SHELL := sh
+PYTHON:=python3
+PIP:=pip3
+VERSION:=$(shell cat ../../VERSION)
+SED:=sed -i
+VENV_BIN:=bin
+
+ifeq ($(OS),Windows_NT)
+PYTHON:=python
+PIP:=pip
+VENV_BIN:=Scripts
+else
+UNAME_S:=$(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+SED:=sed -i '' -e
+endif
+endif
+
+VENV_ACTIVATE:=$(VENV_BIN)/activate
 
 .PHONY: license
 license:
@@ -34,6 +54,7 @@ dist:
 	mkdir -p dist
 	cp -r $(PACKAGE_NAME) build/
 	cp pyproject.toml build/
+	cp README.md COPYING COPYING.LESSER build/
 	$(SED) 's/version = "0.0.0"/version = "$(VERSION)"/' build/pyproject.toml
 	$(SED) 's/version = "0.0.0"/version = "$(VERSION)"/' build/$(PACKAGE_NAME)/__init__.py
 	cd build && $(PYTHON) -m venv env && . env/$(VENV_ACTIVATE) && $(PIP) install build
