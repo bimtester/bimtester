@@ -39,8 +39,6 @@ from logging import StreamHandler
 import behave.formatter.pretty  # Needed for pyinstaller to package it
 from behave.__main__ import main as behave_main
 
-from bimtester.ifc import IfcStore
-
 
 class TestRunner:
     def __init__(self, ifc_path, schema_path=None, ifc=None):
@@ -86,7 +84,7 @@ class TestRunner:
         if os.path.isfile(args["feature"]):
             shutil.copy(args["feature"], features_path)
         elif os.path.isdir(args["feature"]):
-            copy_tree(args["feature"], features_path)
+            shutil.copytree(args["feature"], features_path, dirs_exist_ok=True)
         if args["steps"]:
             if os.path.isfile(args["steps"]):
                 shutil.copy(args["steps"], steps_path)
