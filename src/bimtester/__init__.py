@@ -18,6 +18,6 @@
 
 from os.path import dirname, realpath
 
-__version__ = version = "0.0.0"
+__version__ = version = "1.0.0"
 
 package_path = dirname(realpath(__file__))
