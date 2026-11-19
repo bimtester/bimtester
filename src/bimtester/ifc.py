@@ -22,6 +22,7 @@ import time
 
 import ifcopenshell
 import ifcopenshell.util.element as eleutils
+import ifcopenshell.util.selector
 
 
 # ********************************************************************************************
@@ -86,7 +87,7 @@ def init_ifcstore(ifc_file_path, elementfilter):
     # IfcStore.elements = IfcStore.file.by_type(elementfilter)  # noqa: F401 # type: ignore
     IfcStore.elements = list(ifcopenshell.util.selector.filter_elements(IfcStore.file, elementfilter))
     for elem in IfcStore.elements:
-        IfcStore.psets[elem.id()] = eleutils.get_psets(elem, psets_only=True)
+        IfcStore.psets[elem.id()] = get_psets_enums_as_scalar(IfcStore.file, elem)
         IfcStore.qsets[elem.id()] = eleutils.get_psets(elem, qtos_only=True)
         IfcStore.materials[elem.id()] = eleutils.get_material(elem)
         IfcStore.layernames[elem.id()] = get_layer_name(IfcStore.file, elem)
@@ -124,6 +125,33 @@ def output_some_information(elementfilter):
     print("")
 
     return True
+
+
+# ************************************************************************************************
+def get_psets_enums_as_scalar(ifcfile, elem):
+    """
+    eleutils.get_psets returns IfcPropertyEnumeratedValue always as a list,
+    #135=IFCPROPERTYENUMERATEDVALUE('Status',$,(IFCLABEL('DEMOLISH')),$);
+    --> {'Status': ['DEMOLISH']}
+    Thus comparisons against 'DEMOLISH' fail.
+    An enumerated value with exactly one value is returned as scalar --> {'Status': 'DEMOLISH'}
+    IfcPropertyListValue and enums with more than one value stay lists.
+    """
+    psets = eleutils.get_psets(elem, psets_only=True)
+    for pset in psets.values():
+        pset_id = pset.get("id")
+        if pset_id is None:
+            continue
+        pset_entity = ifcfile.by_id(pset_id)
+        if not pset_entity.is_a("IfcPropertySet"):
+            continue
+        for prop in pset_entity.HasProperties or ():
+            if not prop.is_a("IfcPropertyEnumeratedValue"):
+                continue
+            value = pset.get(prop.Name)
+            if isinstance(value, (list, tuple)) and len(value) == 1:
+                pset[prop.Name] = value[0]
+    return psets
 
 
 # ************************************************************************************************
